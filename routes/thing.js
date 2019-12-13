@@ -9,6 +9,12 @@ const {
   getThingById,
 } = require('../services/thing');
 
+const {
+  validateParam,
+} = require('../utils/validator');
+
+const validateIdParam = validateParam('id');
+
 const api = Router();
 
 api.get('/', asyncHandler(async (req, res) => {
@@ -17,7 +23,7 @@ api.get('/', asyncHandler(async (req, res) => {
   res.send(things)
 }));
 
-api.get('/things/:id', asyncHandler(async (req, res) => {
+api.get('/:id', asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const thing = await getThingById(id);
@@ -37,7 +43,19 @@ api.post('/', asyncHandler(async (req, res) => {
   res.send(201);
 }));
 
-api.put('/things/:id', asyncHandler(async (req, res) => {
+api.put('/:id', validateIdParam, asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!title && !body) {
+    return res.sendStatus(400);
+  }
+
+  await updateThing({ id, title, body });
+
+  res.send(200);
+}));
+
+api.patch('/:id', validateIdParam, asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   await updateThing({ id, title, body });
@@ -45,7 +63,7 @@ api.put('/things/:id', asyncHandler(async (req, res) => {
   res.send(200);
 }));
 
-api.delete('/:id', asyncHandler(async (req, res) => {
+api.delete('/:id', validateIdParam, asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   await deleteThing(id);
