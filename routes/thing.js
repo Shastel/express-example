@@ -46,7 +46,7 @@ api.post('/', asyncHandler(async (req, res) => {
 api.put('/:id', validateIdParam, asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { title, body } = req.body;
-  
+
   if (!title && !body) {
     return res.sendStatus(400);
   }
@@ -58,7 +58,7 @@ api.put('/:id', validateIdParam, asyncHandler(async (req, res) => {
 
 api.patch('/:id', validateIdParam, asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const {title, body} = req.body;
+  const { title, body } = req.body;
 
   await updateThing({ id, title, body });
 
