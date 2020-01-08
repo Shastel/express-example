@@ -1,7 +1,6 @@
 const identity = a => a;
 
-
-export function validateParam (param, cb = identity) {
+function validateParam (param, cb = identity) {
   return function (req, res, next) {
     const value = req.params[param];
 
@@ -12,3 +11,5 @@ export function validateParam (param, cb = identity) {
     next();
   }
 }
+
+module.exports = { validateParam };
